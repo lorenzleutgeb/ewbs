@@ -1,0 +1,251 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{charter}
+\usepackage{amsmath,amsthm,amssymb,enumitem}
+\usepackage{nopageno}
+\usepackage{ifthen}
+\usepackage{mathtools}
+\usepackage{csquotes}
+\usepackage{prooftrees}
+\usepackage{listings}
+\usepackage[top=2cm, left=2cm, bottom=2cm, right=2cm]{geometry}
+
+\newenvironment{block}%
+{\addtolength{\itemindent}{3em}}%
+{\addtolength{\itemindent}{-3em}}
+
+\lstset{basicstyle=\ttfamily,breaklines=true}
+
+\theoremstyle{remark}
+
+\newtheorem*{header}{Mnr}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{inddescr}{Description}
+\newtheorem*{indHypo}{Induction Hypothesis}
+\newtheorem*{basecase}{Base Case}
+\newtheorem*{indStep}{Induction Step}
+%\linespread{0.95}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\entails}{\models}
+\newcommand{\pline}[2]{
+\ifthenelse{\equal{#2}{}}{\item #1}{\item{#1\hfill(#2)}}
+}
+
+\newcommand{\exercise}[1]{{\bfseries{Exercise #1:}}}
+
+\begin{document}
+
+\exercise{1.1} Let $\phi = \forall x \exists y \ p(x, y)$ and $\psi = \exists y \forall x \ p(x, y)$. Show using the semantics of first-order logic that
+\begin{enumerate}[label=(\alph*)]
+	\item $\psi \to \phi$ is a valid first-order formula, and
+    
+    \begin{proof}
+    	
+    \end{proof}
+	\item $\psi$ is not a logical consequence of $\phi$ by providing a counterexample (i.e., a first-order interpretation $\mathcal{I}$ falsifying the formula).
+    
+    \begin{proof} I show that $\phi \not \entails \psi$ by providing some $\mathcal{I}$ so that $\phi \to \psi$ is not satisfied. Let $\mathcal{U} = \N_0$ and the intended meaning of $p(a, b)$ be \enquote{$a$ equals $b$}, i.e.~$\mathcal{I}(p) = \{(n, n) \ | \ n \in \mathcal{U}\}$. Now the implication $\phi \to \psi$ is falsified by showing that $\mathcal{I}_{\alpha}(\phi) = 1$ and $\mathcal{I}_{\alpha}(\psi) = 0$.\\ $\mathcal{I}_{\alpha \cup \{x \leftarrow a\}}(\exists y \ p(a, y)) = 1$ iff we can find one instance $b$ for any $a$, s.t.~$\mathcal{I}_{\alpha \cup \{x \leftarrow a, b \leftarrow y\}}(p(a, b)) = 1$. Choose $\alpha(a) = \alpha(b)$ arbitrarily.\\
+$\mathcal{I}_{\alpha}(\psi) = 0$ iff we cannot find some $c$ so that $p(c,d)$ for any $d$, e.g.~$\mathcal{I}_{\alpha \cup \{y \leftarrow c, x \leftarrow d\}}(p(d, c)) = 0$, which is the case because no natural number is equal to all natural numbers.
+    \end{proof}
+\end{enumerate}
+
+\exercise{1.2} Let $L$ be a language of propositional logic where formulas are build only from
+Boolean variables using the primitive connectives $\neg$, $\wedge$, $\vee$, $\to$, and $\leftrightarrow$ (thus $\top$ and $\bot$ are not part of the language). Furthermore, let $A$ be a formula of $L$ containing no occurrence of $\neg$ and let $B$ be any formula of $L$.
+
+Show the following propositions:
+
+\begin{enumerate}[label=(\arabic*)]
+\item Let $I$ be an interpretation assigning to all atomic formulas of $A$ the truth value 1. Then
+$A$ is true under $I$.
+\begin{proof}Given an interpretation $I$ assigning to all atomic formulas of $A$ the truth value 1, let $f(A)$ denote the logical complexity of $A$, (i.e.~the number of logical connectives in $A$) and $\mathcal{P}(n)$ denote $\forall A \ (f(A) = n) \to (I(A) = 1)$ (i.e.~all formulas of logical complexity $n$ have the truth value 1). $\mathcal{P}(n)$ for $n \geq 0$ is shown by strong induction over $n$.
+
+Base case: For $n = 0$, $\mathcal{P}(n)$ trivially holds, as all $A$ with $f(A) = 0$ are atoms and $I$ assigns the truth value 1 to all atoms.
+
+Induction hypothesis: Assume $\mathcal{P}(i)$ for all $0 \leq i \leq n$.
+
+Induction step: Let $A = A_1 \circ A_2$ where $\circ \in \{\wedge, \vee, \to, \leftrightarrow\}$  and $f(A) = n + 1$. Then $f(A_1) < f(A)$ and $f(A_2) < f(A)$ because $\circ$ is a logical connective. Assume $\mathcal{P}(f(A_1))$ and $\mathcal{P}(f(A_2))$ by the induction hypothesis, thus $I(A_1) = 1$ and $I(A_2) = 1$. $I(A) = 1$ follows for any $\circ$ wrt.~its semantics. Hence, $\mathcal{P}(n+ 1)$ follows from the induction hypothesis.
+
+Conclusion: $\mathcal{P}(n)$ holds for any $n \geq 0$, i.e.~any formula $A$ is true under $I$.
+\end{proof}
+
+\item If $\entails B \leftrightarrow \neg A$, then $B$ contains at least one occurrence of $\neg$.
+\begin{proof}I show that $B$ must contain at least one occurrence of $\neg$ indirectly. Assuming $\entails B \leftrightarrow \neg A$, for any interpretation $B \leftrightarrow A$ must hold. Choose some $I$ that assignes to all atomic formulas in $A$ and $B$ the truth value 1 similar to $I$ in (1). $I(A) = 1$ was shown in (1), so $I(\neg A) = 0$. Assume $B$ does not contain any occurrence of $\neg$ towards a contradiction. Therefore $B$ can be constructed using atoms and operators in the same manner as any $A$ and the proposition in (1) holds for $B$ as well, i.e.~$I(B) = 1$. However, $I(A) \not = I(B)$, thus $A \leftrightarrow B$ is not satisfied. Contradiction. $B$ must contain at least one occurrence of $\neg$.
+\end{proof}
+\end{enumerate}
+
+Hint: Show (1) by induction on the logical complexity of A (i.e., on the number of occurrences
+of logical connectives in A). Show (2) using (1).\\
+
+\exercise{1.3} Translate the following arguments into propositional logic and show by TC1 that the argument is either correct or else extract an interpretation from the tableau showing that the argument is not correct.
+
+\begin{enumerate}[label=(\alph*)]
+	\item{The Joker is incarcerated in Arkham Asylum ($I$) if he was caught by the police ($P$) or by Batman ($B$). He is not incarcerated in Arkham Asylum. Therefore, he was neither caught by the police nor by Batman.
+    
+    \begin{proof} TC1 is used to show that the assumptions in conjunction with the negated conclusion is unsatisfiable, therefore the statement is valid.
+    \begin{center}
+    \begin{prooftree}
+{
+to prove={\{(P \vee B) \to I, \neg I \} \entails (\neg P \wedge \neg B)}
+}
+[(\neg P \wedge \neg B) \vee I, just={Assumption}
+[\neg I, just={Assumption}
+[P \vee B, just={$\neg$Conclusion},
+	[I,just={from 1},close={2,4}],
+	[\neg P \wedge \neg B,just={from 1},
+	[\neg P,just={from 4}
+		[\neg B,just={from 4},
+			[P,just={from 3},close={5,7}],
+			[B,just={from 3},close={6,7}]
+		]
+	]
+]]]]
+    \end{prooftree}
+    \end{center}
+    \end{proof}
+    }
+	\item{If you work as a physician ($P$), you must have studied medicine ($M$) or forged a diploma ($F$). You do not work as a physician. Therefore, you neither studied medicine nor forged a diploma.
+    
+    \begin{proof}[Disproof]TC1 is used to show that the assumptions in conjunction with the negated conclusion is satisfiable, resulting in a countermodel.
+        \begin{center} 
+    \begin{prooftree}
+{
+to prove={\{P \to (M \vee F), \neg P \} \entails (\neg M \wedge \neg F)}
+}
+[\neg P \vee (M \vee F), just={Assumption}
+[\neg P, just={Assumption}
+[M \vee F, just={$\neg$Conclusion},
+[M,just={from 3},
+	[\neg P,just={from 1}],
+	[M \vee F,just={from 1},
+		[M,just={from 5}],
+        [F,just={from 5}]
+    ]
+],
+[F,just={from 3},
+	[\neg P,just={from 1}],
+	[M \vee F,just={from 1},
+		[M,just={from 5}],
+		[F,just={from 5}]
+	]
+]]]]]]
+    \end{prooftree}
+    \end{center}
+    
+    Countermodels obtained:
+    
+    \begin{center}
+    \begin{tabular}{|c|ccc|}
+   		 \hline
+         &$\mathcal{I}_1$&$\mathcal{I}_2$&$\mathcal{I}_3$\\
+         \hline
+    	$P$&0&0&0\\
+        $M$&0&1&1\\
+        $F$&1&0&1\\
+        \hline
+    \end{tabular}
+    \end{center}
+    \end{proof}
+    }
+\end{enumerate}
+
+\exercise{1.4} Let $\Gamma$ be a (possibly infinite) set of formulas and $\varphi$, $\psi$, and $\chi$ propositional formulas. Prove or refute the following statement using semantics of first-order logic:\\
+
+If $\Gamma \cup \{ \varphi \} \entails \chi$ and $\Gamma \cup \{ \psi \} \entails \chi$, then $\Gamma \cup \{ \varphi \vee \psi \} \entails \chi$.
+
+\begin{proof}
+
+From the premises we know that $\mathrm{Mod}(\Gamma \cup \{ \varphi \}) \subseteq \mathrm{Mod}(\chi)$ and $\mathrm{Mod}(\Gamma \cup \{ \psi \}) \subseteq \mathrm{Mod}(\chi)$ respectively. According to the semantics of disjunction, there are two possible sets of models for the conclusion, them being $\mathrm{Mod}(\Gamma \cup \{ \varphi \})$ or $\mathrm{Mod}(\Gamma \cup \{ \psi \})$, both of which are subsets of $\mathrm{Mod}(\chi)$ according to the premises, therefore the statement is valid.
+
+\end{proof}
+ 
+\exercise{1.5} Certain inference patterns of propositional logic can be seen as representing
+proof techniques. E.g., the deduction theorem presented in the lecture says that, in order to
+prove an implication $\varphi \to \psi$ from a knowledge base (theory) $\Gamma$, we may prove $\psi$ using the
+assumptions in $\Gamma$ and, additionally, $\varphi$.
+To this end, let $n \geq 1$ and propositional formulas $\varphi_1, \ldots, \varphi_n$ be given. We define
+
+$$\Gamma^n := \{\varphi_i \to \varphi_{i+1} \ | \ 1 \leq i \leq n - 1 \} \cup \{ \varphi_n \to \varphi_1 \}$$
+
+Show that for all $n \geq 1$ and all $1 \leq i$, $j \leq n$ it holds that $\Gamma^n \entails \varphi_i \leftrightarrow \varphi_j$.
+(\emph{Hint:} Prove the statement by induction on $n$. In the induction step, recall that $Cn(\cdot)$ is
+monotonic and idempotent.)
+ 
+\begin{proof}Let $\mathcal{P}(n)$ denote $\Gamma^n \entails \varphi_i \leftrightarrow \varphi_j$ for $1 \leq i$, $j \leq n$. The proof is by induction on $n$.\\
+
+Base Case: With $\Gamma^1 = \emptyset \cup \{ \varphi_1 \to \varphi_1 \}$ observe that $\mathcal{P}(1)$ holds trivially because $i = j = 1$ and $\varphi_1 \leftrightarrow \varphi_1$.\\
+
+Induction Hypothesis: Assume $\mathcal{P}(n)$ holds for some $n$.\\
+
+Induction Step: $\Gamma^{n+1} = \{\varphi_i \to \varphi_{i+1} \ | \ 1 \leq i \leq n \} \cup \{ \varphi_{n+1} \to \varphi_1 \}$. Observe that $\Gamma^{n+1} \entails \varphi_n \to \varphi_1$ as $\varphi_n \to \varphi_{n+1}$ and $\varphi_{n+1} \to \varphi_1$ (both contained in $\Gamma^{n+1}$) imply $\varphi_n \to \varphi_1$, i.e.~$\Gamma^{n+1}$ is a \enquote{superstructure} of $\Gamma^n$.
+Using the induction hypothesis we have $\Gamma^{n+1} \entails \varphi_i \leftrightarrow \varphi_j$ for all $1 \leq i, j \leq n$. $\varphi_{n+1} \leftrightarrow \varphi_i$ for all $1 \leq i \leq n$ follows from $\varphi_i \leftrightarrow (\varphi_n \to \varphi_{n+1})$ and $(\varphi_{n+1} \to \varphi_1) \leftrightarrow \varphi_i$. Thus $\Gamma^{n+1} \entails \varphi_i \leftrightarrow \varphi_j$ for all $1 \leq 1, j \leq n+1$ and $\mathcal{P}(n+1)$ holds.\\
+
+Conclusion: We have shown by induction that $\Gamma^n \entails \varphi_i \leftrightarrow \varphi_j$ for all $n \geq 1$ and all $1 \leq i$, $j \leq n$.
+\end{proof}
+
+\exercise{1.6} Let $x$ be a variable, $\phi(x)$ be a formula containing $x$ free, and $\psi$ be a formula not containing $x$ free. Show:\\
+
+If $\entails \psi \to \phi(x)$, then $\entails \psi \to \forall x \ \phi (x)$.
+
+\begin{proof}
+By closing $\entails \psi \to \phi(x)$ we obtain $\entails \psi \to \forall x \ \phi (x)$:
+
+$$\entails \psi \to \phi(x) \equiv \ \entails \forall x (\psi \to \phi(x)) \equiv \ \entails \psi \to \forall x \phi(x)$$
+\end{proof}
+
+\newpage
+
+\exercise{3.1} Let $P$ be a Horn logic program and $M_1, M_2 \subseteq \textit{HB}(P)$ classical models of $P$. Prove that $M_1 \cap M_2$ is also a classical model of $P$. What about $M_1 \cup M_2$?
+
+\begin{enumerate}
+	\item A model $M$ is an answer set of a ground program $P$ iff it is a minimal model of $P^M$, i.e.~there is no $N \subset M$ which also is a model of $P^M$.
+    \item A program is normal if all its rules are non-disjunctive and contain no strong negation $\neg$, e.g.~are $a_1 :- \ b_1, \ldots, b_k, \text{not} \ b_{k+1}, \ldots, \text{not}  \ b_n$.
+    \item A program is basic if all rules are 
+	\item A program is Horn if all its rules are non-disjunctive, contain no negation $\neg$, contain no default negation and are no constraints, e.g.~are $a_1 :- \ b_1, \ldots, b_n$ ($n = k$).
+\end{enumerate}
+
+\exercise{3.2} Let $S_1$, $S_2$ be answer sets of a normal program $P$. Show that $S_1 \subseteq S_2$ implies $S_1 = S_2$.
+
+\begin{enumerate}
+	\item A model $M$ is an answer set of a ground program $P$ iff it is a minimal model of $P^M$, i.e.~there is no $N \subset M$ which also is a model of $P^M$.
+	\item A program is normal if all its rules are non-disjunctive and contain no strong negation $\neg$, e.g.~are $a_1 :- \ b_1, \ldots, b_k, \text{not} \ b_{k+1}, \ldots, \text{not}  \ b_n$.
+\end{enumerate}
+
+\begin{proof}$S_1 \not \subset S_2$ because $S_2$ must be minimal. $S_1 = S_2$ follows from $S_1 \subseteq S_2$ and $S_1 \not \subset S_2$.
+\end{proof}
+
+\exercise{3.3} The combinatorial graph problem \emph{Clique} is defined as follows:\\
+\textsc{Instance}: Given a graph $G = (V, E)$ and a positive integer $k \leq |V|$.\\
+\textsc{Question}: Does there exist a subset $V' \subseteq V$ such that $|V'| \geq k$ and such that every two vertices in $V'$ are joined by an edge in $E$?
+Define all required predicates, rules, and constraints to represent the \emph{Clique} problem as an answer-set program $P$ such that
+
+\begin{itemize}
+\item each vertex $v \in V$ of $G$ is denoted by a fact \texttt{vertex(v)},
+\item each edge $(u, v) \in E$ of $G$ is denoted by a fact \texttt{edge(u, v)}, and
+\item answer sets of $P$ correspond to solutions $V'$.
+\end{itemize}
+
+The following Datalog program models $P$ with the set $V'$ represented by all vertices with \texttt{clique(v)}:
+
+\begin{lstlisting}[breaklines]
+% Specify k.
+#const k = n.
+
+% Guess selected or not selected for
+% every vertex. Only vertices can be
+% selected to ensure that selected
+% vertices are subset of vertices.
+clique(V) v -clique(V) :- vertex(V).
+
+% At least k vertices must be selected.
+:- #count{V : clique(V)} < k.
+
+% Every two vertices that are selected
+% must be connected.
+:- selected(U), selected(V), U != V, not edge(U,V), not edge(V,U).
+\end{lstlisting}
+
+\end{document}
