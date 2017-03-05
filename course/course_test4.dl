@@ -1,0 +1,18 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+% Showcase:
+% Note that it is also possible that a given problem
+% instance does not have a solution. The simplest example
+% would be a timetable made up of only one cell (1, 1) and
+% only one course at (1, 1), but the grid has conflicting
+% numbers for the row- and column-scheduling. Can you
+% imagine how those numbers may look like? What should be
+% the output of DLV be in this situation?
+
+% No answer sets expected.
+
+sumdays(1,1).
+
+sumrooms(1,0).
+
+course(c1,1,1).

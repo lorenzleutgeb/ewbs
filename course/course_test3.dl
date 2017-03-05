@@ -1,0 +1,23 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+% Checkboard pattern on  2x2 grid.
+
+% Expected answer sets:
+%
+% {scheduled(1,2), scheduled(2,1)}
+% {scheduled(1,1), scheduled(2,2)}
+
+nextday(1,2).
+
+nextroom(1,2).
+
+course(c1,1,1).
+course(c1,1,2).
+course(c1,2,1).
+course(c1,2,2).
+
+sumdays(1,1).
+sumdays(2,1).
+
+sumrooms(1,1).
+sumrooms(2,1).

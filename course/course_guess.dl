@@ -1,0 +1,5 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+% All cells that can be scheduled for a course are
+% scheduled or not scheduled.
+scheduled(X,Y) v -scheduled(X,Y) :- course(C,X,Y).

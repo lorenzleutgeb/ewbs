@@ -1,0 +1,46 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+
+% ----------------- Auxiliary Predicates ------------------
+
+% Handy predicate that defines the domain of days.
+day(1).
+day(X2) :- day(X1), nextday(X1,X2).
+
+% Handy predicate that defines the domain of rooms.
+room(1).
+room(Y2) :- room(Y1), nextroom(Y1,Y2).
+
+
+% --------------------- Sanity Checks ---------------------
+
+% Ensure that no answer sets are found in case two courses
+% overlap (specification violated).
+:- course(C1,X,Y), course(C2,X,Y), C1 != C2.
+
+% Sums of days should be only defined for rooms.
+:- sumdays(Y,_), not room(Y).
+
+% Sums of days must be unique and within bounds.
+:- sumdays(Y,M1), sumdays(Y,M2), M1 != M2.
+:- sumdays(Y,M), M < 0.
+:- sumdays(Y,M), M > #count{X : day(X)}.
+
+% Sums of rooms should be only defined for days.
+:- sumrooms(X,_), not day(X).
+
+% Sums of rooms must be unique and within bounds.
+:- sumrooms(X,N1), sumrooms(X,N2), N1 != N2.
+:- sumrooms(X,N), N < 0.
+:- sumrooms(X,N), N > #count{Y : room(Y)}.
+
+
+% ---------------------- Constraints ----------------------
+
+% The number of scheduled days per room must match the
+% expected sum of days.
+:- room(Y), sumdays(Y,M), not #count{X : scheduled(X,Y)} = M.
+
+% The number of scheduled rooms per day must match the
+% expected sum of rooms.
+:- day(X), sumrooms(X,N), not #count{Y : scheduled(X,Y)} = N.
