@@ -1,0 +1,20 @@
+vertex(1).
+vertex(2).
+vertex(3).
+vertex(4).
+vertex(5).
+vertex(6).
+
+edge(1,2).
+edge(1,5).
+edge(2,3).
+edge(2,5).
+edge(3,4).
+edge(4,5).
+edge(4,6).
+
+%:- vertex(V1), not clique(V1).
+%:- vertex(V1), vertex(V2), not clique(V1), not clique(V2), V1 != V2.
+%:- vertex(V1), vertex(V2), vertex(V3), not clique(V1), not clique(V2), not clique(V3), V1 != V2, V1 != V3, V2 != V3.
+
+:- vertex(V1), vertex(V2), vertex(V3), vertex(V4), not clique(V1), not clique(V2), not clique(V3), not clique(V4), V1 != V2, V1 != V3, V1 != V4, V2 != V3, V2 != V4, V3 != V4.

@@ -1,0 +1,7 @@
+vertex(1).
+vertex(2).
+vertex(3).
+
+edge(1,2).
+
+:- vertex(V1), vertex(V2), not clique(V1), not clique(V2), V1 != V2.

@@ -1,0 +1,8 @@
+clique(V) v -clique(V) :- vertex(V).
+
+% At least k vertices must be clique.
+%:- #count{V : clique(V)} < 3.
+
+% Every two vertices that are clique
+% must be connected.
+:- clique(U), clique(V), U != V, not edge(U,V), not edge(V,U).
