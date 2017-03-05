@@ -1,0 +1,3 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+:- ok(S), wary(S).

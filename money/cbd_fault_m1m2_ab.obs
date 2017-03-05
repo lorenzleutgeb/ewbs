@@ -1,0 +1,6 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+% Measure that m1 is behaving abnormally, this means that
+% m2 must behave abnormally as well (otherwise inconsistent
+% with the observed type of money in deposits 4 and 5).
+t(m1,0).

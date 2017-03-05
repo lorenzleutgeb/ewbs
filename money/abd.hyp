@@ -1,0 +1,12 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+ok(m1).
+ok(m2).
+ok(c1).
+
+ok(w1).
+ok(w2).
+
+wary(m1).
+wary(m2).
+wary(c1).

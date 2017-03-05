@@ -1,0 +1,6 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+% We observe that w1 and w2 behave correctly,
+% thus c1 must bhave abnormally.
+t(w1,1).
+t(w2,0).

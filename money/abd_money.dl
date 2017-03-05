@@ -1,0 +1,93 @@
+% Author: Lorenz Leutgeb <e1127842@student.tuwien.ac.at>
+
+#const fake = 0.
+#const real = 1.
+
+
+% ------------------------ Network ------------------------
+
+% Declare strawmen.
+
+m(m1).
+m(m2).
+
+w(w1).
+w(w2).
+
+c(c1).
+
+% Set up connections.
+
+s1(m1,M) :- d1(M).
+s2(m1,M) :- d2(M).
+
+s1(m2,M) :- t(m1,M).
+s2(m2,M) :- d3(M).
+
+s1(w1,M) :- t(m1,M).
+s2(w1,M) :- d3(M).
+
+s1(w2,M) :- d1(M).
+s2(w2,M) :- d2(M).
+
+s1(c1,M) :- t(w1,M).
+s2(c1,M) :- t(w2,M).
+
+d4(M) :- t(m2,M).
+d5(M) :- t(c1,M).
+
+
+% ----------------- Auxiliary Predicates ------------------
+
+% Holds if there is any money M handed to S.
+sany(S,M) :- s1(S,M).
+sany(S,M) :- s2(S,M).
+
+% Holds if only M is handed to S.
+sall(S,M) :- s1(S,M), s2(S,M).
+
+% Define the domain of strawmen.
+s(c1).
+s(S) :- w(S).
+s(S) :- m(S).
+
+% aw stands for "act warily" to generalize behaviour of
+% strawman acting warily, independent of whether this is
+% their inteded behaviour or not.
+aw(S) :- wary(S).
+aw(S) :- w(S), ok(S).
+
+
+% ----------------------- Behaviour -----------------------
+
+% Act warily, passing real money if both sources provide
+% real money, and otherwise passing fake money.
+t(S,fake) :- aw(S), sany(S,fake).
+t(S,real) :- aw(S), sall(S,real).
+
+% Act mistrustfully, suspecting a conspiracy and thus
+% passing fake money if both of their sources provide
+% the same, and real money otherwise.
+t(S,fake) :- m(S), ok(S), s1(S,M1), s2(S,M2), M1 == M2.
+t(S,real) :- m(S), ok(S), s1(S,M1), s2(S,M2), M1 != M2.
+
+% Act credulously, passing real money if at least one
+% source provides real money, and otherwise passing fake 
+% money.
+t(S,fake) :- c(S), ok(S), sall(S,fake).
+t(S,real) :- c(S), ok(S), sany(S,real).
+
+
+% ------------------ Domain Constraints -------------------
+
+% Make sure that the money that a strawman receives is
+% unambiguous.
+:- s(S), s1(S, M1), s1(S, M2), M1 != M2.
+:- s(S), s2(S, M1), s2(S, M2), M1 != M2.
+
+% Make sure that strawmen pass either real or fake money
+% but never both at the same time.
+:- s(S), t(S,M1), t(S,M2), M1 != M2.
+
+% Every strawmen must pass on money.
+:- s(S), not t(S,fake), not t(S,real).
